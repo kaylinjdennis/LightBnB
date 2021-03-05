@@ -92,7 +92,7 @@ const getAllProperties = function(options, limit = 10) {
   let queryString = `
 		SELECT properties.*, avg(property_reviews.rating) as average_rating
 		FROM properties
-		JOIN property_reviews ON properties.id = property_id
+		LEFT JOIN property_reviews ON properties.id = property_id
 		`;
   if (options.city) {
     queryParams.push(`%${options.city}%`);
@@ -170,6 +170,6 @@ const addProperty = function(property) {
 		`;
   console.log(queryString, queryParams);
   return pool.query(queryString, queryParams)
-    .then(res => res.rows[0]);
+    .then(res => res.rows);
 };
 exports.addProperty = addProperty;
